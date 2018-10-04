@@ -67,8 +67,7 @@ class DownloadController extends Controller
     public function getDataBase(Request $request)
     {
         $dbname = !empty($request->get('dbName')) ? $request->get('dbName') : '' ;
-        // Load database list from config file
-        $database_list = config('database.database_list');
+
 
         if ($dbname != '')
         {
@@ -76,9 +75,16 @@ class DownloadController extends Controller
             {
                 $connection = DB::connection($dbname);
             }
-            catch(\Exception $e) {}
+            catch(\Exception $e) {return redirect()->route('index')->withFlashSuccess('Database is not exist');}
+            
+            try
+            {
+                $queryTables = $connection->select('SHOW TABLES');
+            }
+            catch(\Exception $e) {return redirect()->route('index')->withFlashSuccess('Database is not exist');}
 
             $this->exportDatabase($connection, $dbname);
+
         }
 
         return redirect()->route('index')->withFlashSuccess('Database has been successfully saved');
@@ -96,20 +102,28 @@ class DownloadController extends Controller
         $backup_name    = false;
         $target_tables  = [];
 
+
         try
         {
             $queryTables = $connection->select('SHOW TABLES');
         }
-        catch(\Exception $e) {}
-
-        // Create an array of all tables
-        foreach ($queryTables as $tables)
+        catch(\Exception $e) 
         {
-            foreach ($tables as $table)
-            {
-                $target_tables[] = $table;
-            }
+            return redirect()->route('index')->withFlashSuccess('Database is not exist');
+        }
 
+        if($queryTables !='')
+        {
+
+            // Create an array of all tables
+            foreach ($queryTables as $tables)
+            {
+                foreach ($tables as $table)
+                {
+                    $target_tables[] = $table;
+                }
+
+            }
         }
 
         if(count($target_tables) > 0)

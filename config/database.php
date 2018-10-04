@@ -42,8 +42,8 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
+            'database' => env('DB_DATABASE', 'project_management'),
+            'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
@@ -52,11 +52,11 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-        'db1' => [
+        'project_management' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => "youandeye",
+            'database' => "project_management",
             'username' => env('DB_USERNAME', ''),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
@@ -168,7 +168,7 @@ return [
     |
      */
     'database_list' => [
-        "db1", "db2", "db3"
+        "project_management", "db2", "db3"
     ],
 ];
 
